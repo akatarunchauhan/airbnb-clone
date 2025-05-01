@@ -15,4 +15,25 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.post("/", async (req, res) => {
+    const { name, email } = req.body;
+
+    try {
+        const existing = await pool.query(
+            "SELECT * FROM users WHERE email = $1",
+            [email]
+        );
+
+        if (existing.rows.length === 0) {
+            await pool.query(
+                "INSERT INTO users (name, email) VALUES ($1, $2)",
+                [name, email]
+            );
+        }
+        res.status(200).json({ message: "User saved" });
+    } catch (err) {
+        res.status(500).json({ error: "Database error" });
+    }
+});
+
 export default router;
