@@ -1,5 +1,6 @@
 import express from "express";
 import pool from "../db/index.js";
+import authenticate from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -34,6 +35,10 @@ router.post("/", async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: "Database error" });
     }
+});
+
+router.get("/protected", authenticate, (req, res) => {
+    res.json({ message: `Hello ${req.user.email}, you are authorized` });
 });
 
 export default router;

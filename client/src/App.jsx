@@ -1,15 +1,23 @@
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
+import Protected from "./pages/Protected";
 
-function App() {
+const App = () => {
     const { user } = useAuth();
 
     return (
-        <div>
-            <h1>Welcome {user ? user.displayName : "Guest"}</h1>
-            {!user && <Login />}
-        </div>
+        <Router>
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route
+                    path="/protected"
+                    element={user ? <Protected /> : <Login />}
+                />
+            </Routes>
+        </Router>
     );
-}
+};
 
 export default App;
