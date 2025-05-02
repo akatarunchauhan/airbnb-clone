@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Protected from "./pages/Protected";
+import Listings from "./pages/Listings";
 
 const App = () => {
     const { user } = useAuth(); // Get current user from context
@@ -14,6 +15,7 @@ const App = () => {
                 path="/protected"
                 element={user ? <Protected /> : <Login />}
             />
+            <Route path="/listings" element={<Listings />} />
         </Routes>
     );
 };
