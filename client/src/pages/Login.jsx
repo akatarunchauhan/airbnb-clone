@@ -6,9 +6,21 @@ const Login = () => {
     const handleGoogleLogin = async () => {
         try {
             const result = await signInWithPopup(auth, provider);
-            console.log("User info:", result.user);
-        } catch (err) {
-            console.error("Login failed:", err);
+            const user = result.user;
+
+            // ✅ Send user info to your backend
+            await fetch("http://localhost:5000/api/users", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: user.displayName,
+                    email: user.email,
+                }),
+            });
+
+            console.log("User info sent to backend");
+        } catch (error) {
+            console.error("Google login error:", error);
         }
     };
 
