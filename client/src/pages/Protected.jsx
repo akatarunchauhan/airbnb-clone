@@ -1,9 +1,15 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
-import { data } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Protected = () => {
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate("/");
+    };
 
     const callProtectedAPI = async () => {
         if (!user) return alert("Please log in first");
@@ -23,8 +29,8 @@ const Protected = () => {
 
     return (
         <div>
-            <h2>Test Protected Route</h2>
-            <button onClick={callProtectedAPI}>Call Protected API</button>
+            <h2>Welcome to the protected page, {user.displayName}!</h2>
+            <button onClick={handleLogout}>Logout</button>
         </div>
     );
 };
