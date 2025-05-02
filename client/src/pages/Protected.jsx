@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 
 const Protected = () => {
     const { user, logout } = useAuth();
@@ -29,8 +30,8 @@ const Protected = () => {
 
     return (
         <div>
-            <h2>Welcome to the protected page, {user.displayName}!</h2>
-            <button onClick={handleLogout}>Logout</button>
+            <Header />
+            <h2>Welcome to the protected page!</h2>
         </div>
     );
 };
