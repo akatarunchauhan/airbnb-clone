@@ -12,21 +12,52 @@ const Header = () => {
     };
 
     return (
-        <header style={styles.header}>
-            <div>
-                <Link to="/protected" style={styles.link}>
-                    Dashboard
-                </Link>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light px-4">
+            <Link className="navbar-brand" to="/">
+                Airbnb Clone
+            </Link>
+            <div className="collapse navbar-collapse">
+                <ul className="navbar-nav ms-auto">
+                    {user && (
+                        <>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/listings">
+                                    Listings
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/create">
+                                    Create Listing
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <span className="nav-link">
+                                    Hello, {user.displayName}
+                                </span>
+                            </li>
+                            <li className="nav-item">
+                                <button
+                                    onClick={logout}
+                                    className="btn btn-outline-danger btn-sm"
+                                >
+                                    Logout
+                                </button>
+                            </li>
+                        </>
+                    )}
+                    {!user && (
+                        <li className="nav-item">
+                            <Link
+                                className="btn btn-outline-primary btn-sm"
+                                to="/"
+                            >
+                                Login
+                            </Link>
+                        </li>
+                    )}
+                </ul>
             </div>
-            {user && (
-                <div style={styles.userSection}>
-                    <span style={styles.userText}>Hi, {user.displayName}</span>
-                    <button onClick={handleLogout} style={styles.button}>
-                        Logout
-                    </button>
-                </div>
-            )}
-        </header>
+        </nav>
     );
 };
 

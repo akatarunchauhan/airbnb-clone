@@ -1,5 +1,6 @@
 import express from "express";
 import pool from "../db/index.js";
+import { messaging } from "firebase-admin";
 
 const router = express.Router();
 
@@ -28,6 +29,21 @@ router.get("/:id", async (req, res) => {
     } catch (err) {
         console.error("Error fetching listing by ID:", err);
         res.status(500).json({ error: "Server error" });
+    }
+});
+
+router.post("/", async (req, res) => {
+    const { title, location, price, image_url, description } = req.body;
+
+    try {
+        await pool.query(
+            "INSERT INTO listings(title, location, price, image_url, description) VALUES ($1,$2,$3,$4,$5)",
+            [title, location, price, image_url, description]
+        );
+        res.status(201).json({ message: "Listing created successfully" });
+    } catch (err) {
+        console.error("Error creating listing:", err);
+        res.status(500).json({ error: "Database error" });
     }
 });
 

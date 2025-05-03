@@ -25,7 +25,7 @@ const Login = () => {
 
             console.log("User info sent to backend");
 
-            navigate("/protected");
+            navigate("/listings");
         } catch (error) {
             console.error("Google login error:", error);
         }
