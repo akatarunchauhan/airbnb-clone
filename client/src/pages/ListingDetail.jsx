@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header";
+import { useAuth } from "../context/AuthContext";
 
 const ListingDetail = () => {
     const { id } = useParams();
     const [listing, setListing] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { user } = useAuth();
 
     useEffect(() => {
         const fetchListing = async () => {
@@ -29,6 +31,19 @@ const ListingDetail = () => {
 
         fetchListing();
     }, [id]);
+
+    const handleDelete = async () => {
+        if (window.confirm("Are you sure you want to delete this listing?")) {
+            try {
+                await fetch(`http://localhost:5000/api/listings/${id}`, {
+                    method: "DELETE",
+                });
+                navigate("/listings");
+            } catch (err) {
+                console.error("Delete failed:", err);
+            }
+        }
+    };
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -54,6 +69,22 @@ const ListingDetail = () => {
                             <strong>Price:</strong> ₹{listing.price}
                         </p>
                         <p>{listing.description}</p>
+                        {user?.uid === listing.user_id && (
+                            <div className="mt-3">
+                                <Link
+                                    to={`/edit-listing/${listing.id}`}
+                                    className="btn btn-primary me-2"
+                                >
+                                    Edit
+                                </Link>
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={handleDelete}
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

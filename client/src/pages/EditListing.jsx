@@ -1,10 +1,13 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Header from "../components/Header";
 
-const CreateListing = () => {
+const EditListing = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
+    const { user } = useAuth();
+
     const [formData, setFormData] = useState({
         title: "",
         location: "",
@@ -13,45 +16,78 @@ const CreateListing = () => {
         description: "",
     });
 
-    const { user } = useAuth();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchListing = async () => {
+            try {
+                const res = await fetch(
+                    `http://localhost:5000/api/listings/${id}`
+                );
+                if (!res.ok) throw new Error("Failed to load listing");
+                const data = await res.json();
+
+                if (data.user_id !== user?.uid) {
+                    throw new Error("Unauthorized");
+                }
+
+                setFormData(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchListing();
+    }, [id, user]);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData((prev) => ({
+            ...prev,
+            [e.target.name]: e.target.value,
+        }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const res = await fetch("http://localhost:5000/api/listings", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
 
-            if (res.ok) {
-                navigate("/listings");
-            } else {
-                console.error("Fal=iled to create listing");
-            }
-        } catch (error) {
-            console.error("Error:", error);
+        try {
+            const res = await fetch(
+                `http://localhost:5000/api/listings/${id}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
+                }
+            );
+
+            if ((!res, ok)) throw new Error("Failed to update listing");
+
+            navigate(`/listings/${id}`);
+        } catch (err) {
+            setError(err.message);
         }
     };
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div className="alert alert-danger">{error}</div>;
 
     return (
         <div>
             <Header />
             <div className="container mt-4">
-                <h2>Create New Listing</h2>
+                <h2>Edit Listing</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
                         <label className="form-label">Title</label>
                         <input
-                            type="text"
                             name="title"
                             className="form-control"
+                            value={formData.title}
                             onChange={handleChange}
                             required
                         />
@@ -59,19 +95,20 @@ const CreateListing = () => {
                     <div className="mb-3">
                         <label className="form-label">Location</label>
                         <input
-                            type="text"
                             name="location"
                             className="form-control"
+                            value={formData.location}
                             onChange={handleChange}
                             required
                         />
                     </div>
                     <div className="mb-3">
-                        <label className="form-label">Price (₹)</label>
+                        <label className="form-label">Price</label>
                         <input
-                            type="text"
                             name="price"
+                            type="number"
                             className="form-control"
+                            value={formData.price}
                             onChange={handleChange}
                             required
                         />
@@ -79,11 +116,10 @@ const CreateListing = () => {
                     <div className="mb-3">
                         <label className="form-label">Image URL</label>
                         <input
-                            type="text"
                             name="image_url"
                             className="form-control"
+                            value={formData.image_url}
                             onChange={handleChange}
-                            required
                         />
                     </div>
                     <div className="mb-3">
@@ -91,17 +127,16 @@ const CreateListing = () => {
                         <textarea
                             name="description"
                             className="form-control"
-                            onChange={handleChange}
                             rows="3"
+                            value={formData.description}
+                            onChange={handleChange}
                         ></textarea>
                     </div>
-                    <button type="submit" className="btn btn-primary">
-                        Create Listing
-                    </button>
+                    <button className="btn btn-success">Update Listing</button>
                 </form>
             </div>
         </div>
     );
 };
 
-export default CreateListing;
+export default EditListing;

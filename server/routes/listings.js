@@ -1,6 +1,6 @@
 import express from "express";
 import pool from "../db/index.js";
-import { messaging } from "firebase-admin";
+// import { messaging } from "firebase-admin";
 
 const router = express.Router();
 
@@ -33,17 +33,45 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+    try {
+        const { title, location, price, image_url, description, user_id } =
+            req.body;
+        const result = await pool.query(
+            `INSERT INTO listings (title, location, price, image_url, description, user_id)
+             VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+            [title, location, price, image_url, description, user_id]
+        );
+        res.status(201).json(result.rows[0]);
+    } catch (err) {
+        console.error("Error creating listing:", err);
+        res.status(500).json({ error: "Failed to create listing" });
+    }
+});
+
+router.put("/:id", async (req, res) => {
+    const { id } = req.params;
     const { title, location, price, image_url, description } = req.body;
 
     try {
         await pool.query(
-            "INSERT INTO listings(title, location, price, image_url, description) VALUES ($1,$2,$3,$4,$5)",
-            [title, location, price, image_url, description]
+            "UPDATE listings SET title=$1, location=$2, price=$3, image_url = $4, description=$5 WHERE id=$6",
+            [title, location, price, image_url, description, id]
         );
-        res.status(201).json({ message: "Listing created successfully" });
+        res.join({ message: "Listing updated" });
     } catch (err) {
-        console.error("Error creating listing:", err);
-        res.status(500).json({ error: "Database error" });
+        console.error(err);
+        res.status(500).json({ error: "Failed to update listing" });
+    }
+});
+
+router.delete("/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        await pool.query("DELETE FROM listings WHERE id = $1", [id]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to delete listing" });
     }
 });
 
