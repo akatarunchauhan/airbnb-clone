@@ -4,6 +4,7 @@ import { useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Protected from "./pages/Protected";
 import Listings from "./pages/Listings";
+import ListingDetail from "./pages/ListingDetail";
 
 const App = () => {
     const { user } = useAuth(); // Get current user from context
@@ -16,6 +17,7 @@ const App = () => {
                 element={user ? <Protected /> : <Login />}
             />
             <Route path="/listings" element={<Listings />} />
+            <Route path="/listings/:id" element={<ListingDetail />} />
         </Routes>
     );
 };
