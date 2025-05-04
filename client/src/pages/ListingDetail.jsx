@@ -38,9 +38,18 @@ const ListingDetail = () => {
     const handleDelete = async () => {
         if (window.confirm("Are you sure you want to delete this listing?")) {
             try {
-                await fetch(`http://localhost:5000/api/listings/${id}`, {
-                    method: "DELETE",
-                });
+                const res = await fetch(
+                    `http://localhost:5000/api/listings/${id}`,
+                    {
+                        method: "DELETE",
+                    }
+                );
+
+                if (!res.ok) {
+                    throw new Error("Delete request failed");
+                }
+
+                console.log("Delete successful");
                 navigate("/listings");
             } catch (err) {
                 console.error("Delete failed:", err);

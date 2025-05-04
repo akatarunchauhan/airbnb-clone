@@ -5,15 +5,15 @@ import { useAuth } from "../context/AuthContext";
 
 const CreateListing = () => {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [formData, setFormData] = useState({
         title: "",
         location: "",
         price: "",
         image_url: "",
         description: "",
+        user_id: user.uid,
     });
-
-    const { user } = useAuth();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });

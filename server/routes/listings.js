@@ -57,7 +57,7 @@ router.put("/:id", async (req, res) => {
             "UPDATE listings SET title=$1, location=$2, price=$3, image_url = $4, description=$5 WHERE id=$6",
             [title, location, price, image_url, description, id]
         );
-        res.join({ message: "Listing updated" });
+        res.json({ message: "Listing updated" });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Failed to update listing" });
