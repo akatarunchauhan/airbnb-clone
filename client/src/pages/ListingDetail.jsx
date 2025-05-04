@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import Header from "../components/Header";
 import { useAuth } from "../context/AuthContext";
 
@@ -9,6 +9,9 @@ const ListingDetail = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { user } = useAuth();
+    console.log("Logged in user:", user);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchListing = async () => {
@@ -69,6 +72,9 @@ const ListingDetail = () => {
                             <strong>Price:</strong> ₹{listing.price}
                         </p>
                         <p>{listing.description}</p>
+                        {console.log("User UID:", user?.uid)}
+                        {console.log("Listing User ID:", listing.user_id)}
+
                         {user?.uid === listing.user_id && (
                             <div className="mt-3">
                                 <Link
