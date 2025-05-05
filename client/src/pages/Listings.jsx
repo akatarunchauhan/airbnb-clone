@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 
 const Listings = () => {
     const [listings, setListings] = useState([]);
+    const location = useLocation(); // track URL changes
 
     useEffect(() => {
         const fetchListings = async () => {
@@ -17,7 +18,7 @@ const Listings = () => {
         };
 
         fetchListings();
-    }, []);
+    }, [location]); // <-- trigger fetch when route changes
 
     return (
         <div>

@@ -45,14 +45,14 @@ const ListingDetail = () => {
                     }
                 );
 
-                if (!res.ok) {
-                    throw new Error("Delete request failed");
+                if (res.ok) {
+                    console.log("Successfully deleted, navigating...");
+                    navigate("/listings");
+                } else {
+                    console.error("Delete failed");
                 }
-
-                console.log("Delete successful");
-                navigate("/listings");
             } catch (err) {
-                console.error("Delete failed:", err);
+                console.error("Delete error:", err);
             }
         }
     };

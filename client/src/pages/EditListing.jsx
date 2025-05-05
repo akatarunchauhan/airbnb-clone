@@ -65,7 +65,7 @@ const EditListing = () => {
                 }
             );
 
-            if ((!res, ok)) throw new Error("Failed to update listing");
+            if (!res.ok) throw new Error("Failed to update listing");
 
             navigate(`/listings/${id}`);
         } catch (err) {
