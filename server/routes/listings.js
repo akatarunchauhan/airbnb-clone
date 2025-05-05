@@ -15,6 +15,21 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.get("/user/:user_id", async (req, res) => {
+    const { user_id } = req.params;
+
+    try {
+        const result = await pool.query(
+            "SELECT * FROM listings WHERE user_id = $1 ORDER BY id DESC",
+            [user_id]
+        );
+        res.json(result.rows);
+    } catch (err) {
+        console.error("Error fetching user's listings: ", err);
+        res.status(500).json({ error: "Failed to fetch user's listings" });
+    }
+});
+
 router.get("/:id", async (req, res) => {
     const { id } = req.params;
     try {
@@ -73,21 +88,6 @@ router.delete("/:id", async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Failed to delete listing" });
-    }
-});
-
-router.get("/user/:user_id", async (req, res) => {
-    const { user_id } = req.params;
-
-    try {
-        const result = await pool.query(
-            "SELECT * FROM listings WHERE user_id = $1 ORDER BY id DESC",
-            [user_id]
-        );
-        res.json(result.rows);
-    } catch (err) {
-        console.error("Error fetching user's listings: ", err);
-        res.status(500).json({ error: "Failed to fetch user's listings" });
     }
 });
 
