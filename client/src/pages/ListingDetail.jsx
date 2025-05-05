@@ -9,6 +9,10 @@ const ListingDetail = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { user } = useAuth();
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [bookingMessage, setBookingMessage] = useState(null);
+
     console.log("Logged in user:", user);
 
     const navigate = useNavigate();
@@ -34,6 +38,33 @@ const ListingDetail = () => {
 
         fetchListing();
     }, [id]);
+
+    const handleBooking = async () => {
+        try {
+            const res = await fetch("http://localhost:5000/api/bookings", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    user_id: user.uid,
+                    listing_id: listing.id,
+                    start_date: startDate,
+                    end_date: endDate,
+                }),
+            });
+
+            if (res.ok) {
+                setBookingMessage("Booking Successful!");
+                setStartDate("");
+                setEndDate("");
+            } else {
+                const errData = await res.json();
+                setBookingMessage("Booking failed: " + errData.error);
+            }
+        } catch (err) {
+            console.error("Booking error:", err);
+            setBookingMessage("Booking failed due to a server error.");
+        }
+    };
 
     const handleDelete = async () => {
         if (window.confirm("Are you sure you want to delete this listing?")) {
@@ -98,6 +129,49 @@ const ListingDetail = () => {
                                 >
                                     Delete
                                 </button>
+                            </div>
+                        )}
+                        {user?.uid !== listing.user_id && (
+                            <div className="mt-4 p-3 border rounded shadow-sm">
+                                <h5>Book This Listing</h5>
+                                <div className="mb-3">
+                                    <label className="form-label">
+                                        Start Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        value={startDate}
+                                        onChange={(e) =>
+                                            setStartDate(e.target.value)
+                                        }
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">
+                                        End Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        value={endDate}
+                                        onChange={(e) =>
+                                            setEndDate(e.target.value)
+                                        }
+                                    />
+                                </div>
+                                <button
+                                    className="btn btn-success"
+                                    onClick={handleBooking}
+                                    disabled={!startDate || !endDate}
+                                >
+                                    Book Now
+                                </button>
+                                {bookingMessage && (
+                                    <div className="mt-2 alert alert-info">
+                                        {bookingMessage}
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>

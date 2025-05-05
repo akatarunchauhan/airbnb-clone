@@ -20,6 +20,10 @@ const Header = () => {
                 <ul className="navbar-nav ms-auto">
                     {user && (
                         <>
+                            <Link to="/my-bookings" className="nav-link">
+                                My Bookings
+                            </Link>
+
                             <Link className="nav-link" to="/my-listings">
                                 My Listings
                             </Link>

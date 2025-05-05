@@ -9,6 +9,7 @@ import CreateListing from "./pages/CreateListing";
 
 import EditListing from "./pages/EditListing";
 import MyListings from "./pages/MyListings";
+import MyBookings from "./pages/MyBookings";
 
 const App = () => {
     const { user } = useAuth(); // Get current user from context
@@ -30,6 +31,10 @@ const App = () => {
             <Route
                 path="/my-listings"
                 element={user ? <MyListings /> : <Login />}
+            />
+            <Route
+                path="/my-bookings"
+                element={user ? <MyBookings /> : <Login />}
             />
         </Routes>
     );
