@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import userRoutes from "./routes/users.js";
 import listingsRoutes from "./routes/listings.js";
+import bookingRoutes from "./routes/bookings.js";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/listings", listingsRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 app.use("/api/users", userRoutes);
 
