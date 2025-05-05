@@ -4,7 +4,7 @@ import Header from "../components/Header";
 
 const Listings = () => {
     const [listings, setListings] = useState([]);
-    const location = useLocation(); // track URL changes
+    const location = useLocation();
 
     useEffect(() => {
         const fetchListings = async () => {
@@ -17,8 +17,11 @@ const Listings = () => {
             }
         };
 
-        fetchListings();
-    }, [location]); // <-- trigger fetch when route changes
+        // Always fetch when component mounts OR refetch is flagged
+        if (listings.length === 0 || location.state?.refetch) {
+            fetchListings();
+        }
+    }, [location]);
 
     return (
         <div>

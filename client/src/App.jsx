@@ -8,6 +8,7 @@ import ListingDetail from "./pages/ListingDetail";
 import CreateListing from "./pages/CreateListing";
 
 import EditListing from "./pages/EditListing";
+import MyListings from "./pages/MyListings";
 
 const App = () => {
     const { user } = useAuth(); // Get current user from context
@@ -26,6 +27,10 @@ const App = () => {
             <Route path="/listings" element={<Listings />} />
             <Route path="/listings/:id" element={<ListingDetail />} />
             <Route path="/edit-listing/:id" element={<EditListing />} />
+            <Route
+                path="/my-listings"
+                element={user ? <MyListings /> : <Login />}
+            />
         </Routes>
     );
 };

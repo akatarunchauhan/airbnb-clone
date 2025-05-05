@@ -47,7 +47,7 @@ const ListingDetail = () => {
 
                 if (res.ok) {
                     console.log("Successfully deleted, navigating...");
-                    navigate("/listings");
+                    navigate("/listings", { state: { refetch: true } });
                 } else {
                     console.error("Delete failed");
                 }
