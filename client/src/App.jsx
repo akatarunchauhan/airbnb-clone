@@ -10,6 +10,7 @@ import CreateListing from "./pages/CreateListing";
 import EditListing from "./pages/EditListing";
 import MyListings from "./pages/MyListings";
 import MyBookings from "./pages/MyBookings";
+import HostDashboard from "./pages/HostDashboard";
 
 const App = () => {
     const { user } = useAuth(); // Get current user from context
@@ -35,6 +36,10 @@ const App = () => {
             <Route
                 path="/my-bookings"
                 element={user ? <MyBookings /> : <Login />}
+            />
+            <Route
+                path="/host-dashboard"
+                element={user ? <HostDashboard /> : <Login />}
             />
         </Routes>
     );

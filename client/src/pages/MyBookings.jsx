@@ -6,6 +6,7 @@ const MyBookings = () => {
     const { user } = useAuth();
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     useEffect(() => {
         const fetchBookings = async () => {
             try {
@@ -26,6 +27,30 @@ const MyBookings = () => {
             fetchBookings();
         }
     }, [user]);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+
+    const handleCancel = async (bookingId) => {
+        if (!window.confirm("Are you sure you want ot cancel this booking?"))
+            return;
+
+        try {
+            const res = await fetch(
+                `http://localhost:5000/api/bookings/${bookingId}`,
+                {
+                    method: "DELETE",
+                }
+            );
+
+            if (!res.ok) throw new Error("Failed to cancel booking");
+
+            setBookings((prev) => prev.filter((b) => b.id !== bookingId));
+        } catch (err) {
+            console.error("Cancel error:", err);
+            alert("Something went wrong while cancelling. Please try again.");
+        }
+    };
 
     return (
         <div>
@@ -64,6 +89,18 @@ const MyBookings = () => {
                                             {new Date(
                                                 booking.end_date
                                             ).toLocaleDateString()}
+                                            <br />
+                                            {new Date(booking.end_date) >
+                                                new Date() && (
+                                                <button
+                                                    className="btn btn-danger mt-2"
+                                                    onClick={() =>
+                                                        handleCancel(booking.id)
+                                                    }
+                                                >
+                                                    Cancel Booking
+                                                </button>
+                                            )}
                                         </p>
                                     </div>
                                 </div>
