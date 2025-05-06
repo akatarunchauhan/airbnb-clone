@@ -8,7 +8,7 @@ body {
         -45deg,
         #222 0%,
         #444 45%,
-        #fff 50%,
+        #948e8e 50%,
         /* Brighter, narrower highlight */ #444 55%,
         #222 100%
     );
@@ -65,4 +65,50 @@ button,
     background-color: #1e1e1e !important;
     color: #f0f0f0 !important;
     border-color: #444 !important;
+}
+
+.card-img-top {
+    transition: transform 0.4s ease;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+.card {
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #5e575a, #6f7577, #958f9b, #d2c3c8);
+    background-size: 400% 400%;
+    z-index: -1;
+    filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.5s;
+    animation: borderAnim 6s ease infinite;
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+@keyframes borderAnim {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
