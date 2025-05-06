@@ -101,6 +101,13 @@ const ListingDetail = () => {
                             src={listing.image_url}
                             alt={listing.title}
                             className="img-fluid rounded mb-3"
+                            style={{
+                                width: "100%",
+                                height: "400px",
+                                objectFit: "cover",
+                                borderRadius: "8px",
+                                marginBottom: "1rem",
+                            }}
                         />
                     </div>
                     <div className="col-md-4">

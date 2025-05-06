@@ -11,9 +11,10 @@ import EditListing from "./pages/EditListing";
 import MyListings from "./pages/MyListings";
 import MyBookings from "./pages/MyBookings";
 import HostDashboard from "./pages/HostDashboard";
+import "./App.css";
 
 const App = () => {
-    const { user } = useAuth(); // Get current user from context
+    const { user } = useAuth();
 
     return (
         <Routes>
