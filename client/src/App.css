@@ -6,15 +6,22 @@ body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(
         -45deg,
-        #111 0%,
-        #333 40%,
-        #ddd 50%,
-        #333 60%,
-        #111 100%
+        #222 0%,
+        #444 45%,
+        #fff 50%,
+        /* Brighter, narrower highlight */ #444 55%,
+        #222 100%
     );
-    background-size: 600% 600%; /* Larger size for more erratic movement */
-    animation: crazyBG 20s ease-in-out infinite; /* Longer duration, varied easing */
+    background-size: 400% 400%; /* Adjust size for the new gradient */
+    animation: crazyBG 15s ease-in-out infinite; /* Slightly faster for impact */
     color: #f0f0f0;
+}
+
+.form-control:focus {
+    background-color: #444;
+    color: #fff;
+    border-color: #888;
+    box-shadow: none;
 }
 
 #root {
@@ -46,4 +53,16 @@ body {
     100% {
         background-position: 0% 0%; /* Back to start */
     }
+}
+
+form,
+input,
+.card,
+textarea,
+select,
+button,
+.modal-content {
+    background-color: #1e1e1e !important;
+    color: #f0f0f0 !important;
+    border-color: #444 !important;
 }

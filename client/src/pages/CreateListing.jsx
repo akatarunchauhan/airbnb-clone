@@ -41,64 +41,69 @@ const CreateListing = () => {
     };
 
     return (
-        <div>
+        <div
+            className="min-vh-100 text-light"
+            style={{ background: "transparent" }}
+        >
             <Header />
             <div className="container mt-4">
-                <h2>Create New Listing</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                        <label className="form-label">Title</label>
-                        <input
-                            type="text"
-                            name="title"
-                            className="form-control"
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Location</label>
-                        <input
-                            type="text"
-                            name="location"
-                            className="form-control"
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Price (₹)</label>
-                        <input
-                            type="text"
-                            name="price"
-                            className="form-control"
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Image URL</label>
-                        <input
-                            type="text"
-                            name="image_url"
-                            className="form-control"
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Description</label>
-                        <textarea
-                            name="description"
-                            className="form-control"
-                            onChange={handleChange}
-                            rows="3"
-                        ></textarea>
-                    </div>
-                    <button type="submit" className="btn btn-primary">
-                        Create Listing
-                    </button>
-                </form>
+                <div className="bg-dark p-4 rounded shadow">
+                    <h2 className="mb-4">Create New Listing</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label className="form-label">Title</label>
+                            <input
+                                type="text"
+                                name="title"
+                                className="form-control bg-secondary text-light border-0"
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Location</label>
+                            <input
+                                type="text"
+                                name="location"
+                                className="form-control bg-secondary text-light border-0"
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Price (₹)</label>
+                            <input
+                                type="text"
+                                name="price"
+                                className="form-control bg-secondary text-light border-0"
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Image URL</label>
+                            <input
+                                type="text"
+                                name="image_url"
+                                className="form-control bg-secondary text-light border-0"
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Description</label>
+                            <textarea
+                                name="description"
+                                className="form-control bg-secondary text-light border-0"
+                                onChange={handleChange}
+                                rows="3"
+                            ></textarea>
+                        </div>
+                        <button type="submit" className="btn btn-primary">
+                            Create Listing
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     );

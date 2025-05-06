@@ -77,63 +77,70 @@ const EditListing = () => {
     if (error) return <div className="alert alert-danger">{error}</div>;
 
     return (
-        <div>
+        <div
+            className="min-vh-100 text-light"
+            style={{ background: "transparent" }}
+        >
             <Header />
             <div className="container mt-4">
-                <h2>Edit Listing</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                        <label className="form-label">Title</label>
-                        <input
-                            name="title"
-                            className="form-control"
-                            value={formData.title}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Location</label>
-                        <input
-                            name="location"
-                            className="form-control"
-                            value={formData.location}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Price</label>
-                        <input
-                            name="price"
-                            type="number"
-                            className="form-control"
-                            value={formData.price}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Image URL</label>
-                        <input
-                            name="image_url"
-                            className="form-control"
-                            value={formData.image_url}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Description</label>
-                        <textarea
-                            name="description"
-                            className="form-control"
-                            rows="3"
-                            value={formData.description}
-                            onChange={handleChange}
-                        ></textarea>
-                    </div>
-                    <button className="btn btn-success">Update Listing</button>
-                </form>
+                <div className="bg-dark p-4 rounded shadow">
+                    <h2 className="mb-4">Edit Listing</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label className="form-label">Title</label>
+                            <input
+                                name="title"
+                                className="form-control bg-secondary text-light border-0"
+                                value={formData.title}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Location</label>
+                            <input
+                                name="location"
+                                className="form-control bg-secondary text-light border-0"
+                                value={formData.location}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Price</label>
+                            <input
+                                name="price"
+                                type="number"
+                                className="form-control bg-secondary text-light border-0"
+                                value={formData.price}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Image URL</label>
+                            <input
+                                name="image_url"
+                                className="form-control bg-secondary text-light border-0"
+                                value={formData.image_url}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Description</label>
+                            <textarea
+                                name="description"
+                                className="form-control bg-secondary text-light border-0"
+                                rows="3"
+                                value={formData.description}
+                                onChange={handleChange}
+                            ></textarea>
+                        </div>
+                        <button className="btn btn-success">
+                            Update Listing
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     );

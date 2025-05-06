@@ -12,7 +12,7 @@ const Header = () => {
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
             <Link className="navbar-brand" to="/">
                 Airbnb Clone
             </Link>

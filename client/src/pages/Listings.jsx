@@ -17,21 +17,20 @@ const Listings = () => {
             }
         };
 
-        // Always fetch when component mounts OR refetch is flagged
         if (listings.length === 0 || location.state?.refetch) {
             fetchListings();
         }
     }, [location]);
 
     return (
-        <div>
+        <div className="min-vh-100" style={{ background: "transparent" }}>
             <Header />
-            <div className="container mt-4">
-                <h2>Available Listings</h2>
+            <div className="container mt-4 text-light">
+                <h2 className="mb-4">Available Listings</h2>
                 <div className="row">
                     {listings.map((listing) => (
                         <div key={listing.id} className="col-md-4 mb-3">
-                            <div className="card h-100">
+                            <div className="card h-100 bg-dark text-light shadow">
                                 <Link to={`/listings/${listing.id}`}>
                                     <img
                                         src={listing.image_url}
@@ -47,7 +46,7 @@ const Listings = () => {
                                     <h5 className="card-title">
                                         <Link
                                             to={`/listings/${listing.id}`}
-                                            className="text-decoration-none text-dark"
+                                            className="text-decoration-none text-light"
                                         >
                                             {listing.title}
                                         </Link>

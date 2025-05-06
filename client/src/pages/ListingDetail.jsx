@@ -92,7 +92,10 @@ const ListingDetail = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div>
+        <div
+            className="min-vh-100 text-light"
+            style={{ background: "transparent" }}
+        >
             <Header />
             <div className="container mt-4">
                 <div className="row">
@@ -106,81 +109,81 @@ const ListingDetail = () => {
                                 height: "400px",
                                 objectFit: "cover",
                                 borderRadius: "8px",
-                                marginBottom: "1rem",
                             }}
                         />
                     </div>
                     <div className="col-md-4">
-                        <h2>{listing.title}</h2>
-                        <p>
-                            <strong>Location:</strong> {listing.location}
-                        </p>
-                        <p>
-                            <strong>Price:</strong> ₹{listing.price}
-                        </p>
-                        <p>{listing.description}</p>
-                        {console.log("User UID:", user?.uid)}
-                        {console.log("Listing User ID:", listing.user_id)}
+                        <div className="bg-dark p-3 rounded shadow">
+                            <h2>{listing.title}</h2>
+                            <p>
+                                <strong>Location:</strong> {listing.location}
+                            </p>
+                            <p>
+                                <strong>Price:</strong> ₹{listing.price}
+                            </p>
+                            <p>{listing.description}</p>
 
-                        {user?.uid === listing.user_id && (
-                            <div className="mt-3">
-                                <Link
-                                    to={`/edit-listing/${listing.id}`}
-                                    className="btn btn-primary me-2"
-                                >
-                                    Edit
-                                </Link>
-                                <button
-                                    className="btn btn-danger"
-                                    onClick={handleDelete}
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                        )}
-                        {user?.uid !== listing.user_id && (
-                            <div className="mt-4 p-3 border rounded shadow-sm">
-                                <h5>Book This Listing</h5>
-                                <div className="mb-3">
-                                    <label className="form-label">
-                                        Start Date
-                                    </label>
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        value={startDate}
-                                        onChange={(e) =>
-                                            setStartDate(e.target.value)
-                                        }
-                                    />
+                            {user?.uid === listing.user_id && (
+                                <div className="mt-3">
+                                    <Link
+                                        to={`/edit-listing/${listing.id}`}
+                                        className="btn btn-primary me-2"
+                                    >
+                                        Edit
+                                    </Link>
+                                    <button
+                                        className="btn btn-danger"
+                                        onClick={handleDelete}
+                                    >
+                                        Delete
+                                    </button>
                                 </div>
-                                <div className="mb-3">
-                                    <label className="form-label">
-                                        End Date
-                                    </label>
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        value={endDate}
-                                        onChange={(e) =>
-                                            setEndDate(e.target.value)
-                                        }
-                                    />
-                                </div>
-                                <button
-                                    className="btn btn-success"
-                                    onClick={handleBooking}
-                                    disabled={!startDate || !endDate}
-                                >
-                                    Book Now
-                                </button>
-                                {bookingMessage && (
-                                    <div className="mt-2 alert alert-info">
-                                        {bookingMessage}
+                            )}
+
+                            {user?.uid !== listing.user_id && (
+                                <div className="mt-4 p-3 bg-secondary rounded shadow">
+                                    <h5>Book This Listing</h5>
+                                    <div className="mb-3">
+                                        <label className="form-label">
+                                            Start Date
+                                        </label>
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            value={startDate}
+                                            onChange={(e) =>
+                                                setStartDate(e.target.value)
+                                            }
+                                        />
                                     </div>
-                                )}
-                            </div>
-                        )}
+                                    <div className="mb-3">
+                                        <label className="form-label">
+                                            End Date
+                                        </label>
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            value={endDate}
+                                            onChange={(e) =>
+                                                setEndDate(e.target.value)
+                                            }
+                                        />
+                                    </div>
+                                    <button
+                                        className="btn btn-success"
+                                        onClick={handleBooking}
+                                        disabled={!startDate || !endDate}
+                                    >
+                                        Book Now
+                                    </button>
+                                    {bookingMessage && (
+                                        <div className="mt-2 alert alert-info">
+                                            {bookingMessage}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
