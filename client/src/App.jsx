@@ -6,7 +6,7 @@ import Protected from "./pages/Protected";
 import Listings from "./pages/Listings";
 import ListingDetail from "./pages/ListingDetail";
 import CreateListing from "./pages/CreateListing";
-
+import ProtectedRoute from "./components/ProtectedRoute";
 import EditListing from "./pages/EditListing";
 import MyListings from "./pages/MyListings";
 import MyBookings from "./pages/MyBookings";
@@ -14,33 +14,60 @@ import HostDashboard from "./pages/HostDashboard";
 import "./App.css";
 
 const App = () => {
-    const { user } = useAuth();
-
     return (
         <Routes>
             <Route path="/" element={<Login />} />
+
             <Route
                 path="/protected"
-                element={user ? <Protected /> : <Login />}
+                element={
+                    <ProtectedRoute>
+                        <Protected />
+                    </ProtectedRoute>
+                }
             />
             <Route
                 path="/create"
-                element={user ? <CreateListing /> : <Login />}
+                element={
+                    <ProtectedRoute>
+                        <CreateListing />
+                    </ProtectedRoute>
+                }
             />
             <Route path="/listings" element={<Listings />} />
             <Route path="/listings/:id" element={<ListingDetail />} />
-            <Route path="/edit-listing/:id" element={<EditListing />} />
+
+            <Route
+                path="/edit-listing/:id"
+                element={
+                    <ProtectedRoute>
+                        <EditListing />
+                    </ProtectedRoute>
+                }
+            />
             <Route
                 path="/my-listings"
-                element={user ? <MyListings /> : <Login />}
+                element={
+                    <ProtectedRoute>
+                        <MyListings />
+                    </ProtectedRoute>
+                }
             />
             <Route
                 path="/my-bookings"
-                element={user ? <MyBookings /> : <Login />}
+                element={
+                    <ProtectedRoute>
+                        <MyBookings />
+                    </ProtectedRoute>
+                }
             />
             <Route
                 path="/host-dashboard"
-                element={user ? <HostDashboard /> : <Login />}
+                element={
+                    <ProtectedRoute>
+                        <HostDashboard />
+                    </ProtectedRoute>
+                }
             />
         </Routes>
     );
