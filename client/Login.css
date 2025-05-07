@@ -1,0 +1,45 @@
+.login-background {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(15px);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    color: #fff;
+    max-width: 400px;
+    width: 90%;
+}
+
+.login-logo {
+    height: 70px;
+    margin-bottom: 1rem;
+}
+
+.login-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.login-button {
+    background-color: #ffd700;
+    border: none;
+    color: #000;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.login-button:hover {
+    background-color: #fff176;
+    transform: scale(1.05);
+}

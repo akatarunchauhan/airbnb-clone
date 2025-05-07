@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 const Header = () => {
     const { user, logout } = useAuth();
@@ -14,7 +15,11 @@ const Header = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
             <Link className="navbar-brand" to="/">
-                Airbnb Clone
+                <img
+                    src={logo}
+                    alt="Chistay Logo"
+                    style={{ height: "40px", margin: "10px" }}
+                />
             </Link>
             <div className="collapse navbar-collapse">
                 <ul className="navbar-nav ms-auto">
