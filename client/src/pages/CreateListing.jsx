@@ -12,6 +12,8 @@ const CreateListing = () => {
         price: "",
         image_url: "",
         description: "",
+        available_from: "",
+        available_to: "",
         user_id: user.uid,
     });
 
@@ -70,6 +72,41 @@ const CreateListing = () => {
                                 required
                             />
                         </div>
+                        <div className="mb-3">
+                            <label className="form-label text-light">
+                                Available From
+                            </label>
+                            <input
+                                type="date"
+                                name="available_from"
+                                value={formData.available_from}
+                                className="form-control"
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        available_from: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label text-light">
+                                Available To
+                            </label>
+                            <input
+                                type="date"
+                                name="available_to"
+                                value={formData.available_to}
+                                className="form-control"
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        available_to: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+
                         <div className="mb-3">
                             <label className="form-label">Price (₹)</label>
                             <input

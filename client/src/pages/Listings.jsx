@@ -44,7 +44,7 @@ const Listings = () => {
             <Header />
             <div className="container mt-4 text-light">
                 <h2 className="mb-4">Available Listings</h2>
-                {/* Filters */}
+
                 <div className="row g-2 mb-4">
                     <div className="col-md-2">
                         <input
@@ -134,6 +134,22 @@ const Listings = () => {
                                         <strong>₹{listing.price}</strong>
                                     </p>
                                     <p>{listing.description}</p>
+                                    {listing.available_from &&
+                                        listing.available_to && (
+                                            <p
+                                                className="text-muted"
+                                                style={{ fontSize: "0.9rem" }}
+                                            >
+                                                Available:{" "}
+                                                {new Date(
+                                                    listing.available_from
+                                                ).toLocaleDateString()}{" "}
+                                                to{" "}
+                                                {new Date(
+                                                    listing.available_to
+                                                ).toLocaleDateString()}
+                                            </p>
+                                        )}
                                 </div>
                             </div>
                         </div>
