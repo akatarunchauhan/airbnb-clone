@@ -5,12 +5,31 @@ import pool from "../db/index.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
+    const { location, minPrice, maxPrice, startDate, endDate } = req.query;
+
+    let query = "SELECT * FROM listings WHERE 1=1";
+    const values = [];
+
+    if (location) {
+        values.push(`%${location.toLowerCase()}%`);
+        query += ` AND LOWER(location) LIKE $${values.length}`;
+    }
+
+    if (minPrice) {
+        values.push(Number(minPrice));
+        query += ` AND price >= $${values.length}`;
+    }
+
+    if (maxPrice) {
+        values.push(Number(maxPrice));
+        query += ` AND price <= $${values.length}`;
+    }
+
     try {
-        const result = await pool.query(
-            "SELECT  * FROM listings ORDER BY id DESC"
-        );
+        const result = await pool.query(query, values);
         res.json(result.rows);
     } catch (err) {
+        console.error("Failed to fetch filtered listings:", err);
         res.status(500).json({ error: "Failed to fetch listings" });
     }
 });
