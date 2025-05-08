@@ -25,6 +25,16 @@ router.get("/", async (req, res) => {
         query += ` AND price <= $${values.length}`;
     }
 
+    if (startDate) {
+        values.push(startDate);
+        query += ` AND available_to >= $${values.length}`;
+    }
+
+    if (endDate) {
+        values.push(endDate);
+        query += ` AND available_from <= $${values.length}`;
+    }
+
     try {
         const result = await pool.query(query, values);
         res.json(result.rows);
@@ -68,13 +78,32 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-        const { title, location, price, image_url, description, user_id } =
-            req.body;
+        const {
+            title,
+            location,
+            price,
+            image_url,
+            description,
+            user_id,
+            available_from,
+            available_to,
+        } = req.body;
+
         const result = await pool.query(
-            `INSERT INTO listings (title, location, price, image_url, description, user_id)
-             VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-            [title, location, price, image_url, description, user_id]
+            `INSERT INTO listings (title, location, price, image_url, description, user_id, available_from, available_to)
+   VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+            [
+                title,
+                location,
+                price,
+                image_url,
+                description,
+                user_id,
+                available_from,
+                available_to,
+            ]
         );
+
         res.status(201).json(result.rows[0]);
     } catch (err) {
         console.error("Error creating listing:", err);
