@@ -104,4 +104,32 @@ router.put("/status/:id", async (req, res) => {
     }
 });
 
+router.patch("/:id/approve", async (req, res) => {
+    const { id } = req.params;
+    try {
+        await pool.query(
+            "UPDATE bookings SET status = 'approved' WHERE id = $1",
+            [id]
+        );
+        res.json({ message: "Booking approved" });
+    } catch (err) {
+        console.error("Error approving booking:", err);
+        res.status(500).json({ error: "Failed to approve booking" });
+    }
+});
+
+router.patch("/:id/reject", async (req, res) => {
+    const { id } = req.params;
+    try {
+        await pool.query(
+            "UPDATE bookings SET status = 'rejected' WHERE id = $1",
+            [id]
+        );
+        res.json({ message: "Booking rejected" });
+    } catch (err) {
+        console.error("Error rejecting booking:", err);
+        res.status(500).json({ error: "Failed to reject booking" });
+    }
+});
+
 export default router;

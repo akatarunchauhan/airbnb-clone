@@ -110,6 +110,13 @@ const Header = () => {
                                 >
                                     Host Dashboard
                                 </Link>
+                                <Link
+                                    className="dropdown-item text-white"
+                                    to="/host-bookings"
+                                >
+                                    Host Bookings
+                                </Link>
+
                                 <div className="dropdown-divider"></div>
                                 <button
                                     className="dropdown-item text-danger"

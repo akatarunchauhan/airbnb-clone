@@ -11,6 +11,7 @@ import EditListing from "./pages/EditListing";
 import MyListings from "./pages/MyListings";
 import MyBookings from "./pages/MyBookings";
 import HostDashboard from "./pages/HostDashboard";
+import HostBookings from "./pages/HostBookings";
 import "./App.css";
 
 const App = () => {
@@ -24,6 +25,14 @@ const App = () => {
                 element={
                     <ProtectedRoute>
                         <Protected />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/host-bookings"
+                element={
+                    <ProtectedRoute>
+                        <HostBookings />
                     </ProtectedRoute>
                 }
             />
