@@ -8,6 +8,26 @@ const Header = () => {
     const navigate = useNavigate();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef();
+    const [pendingCount, setPendingCount] = useState(0);
+
+    useEffect(() => {
+        const fetchPendingBookings = async () => {
+            if (!user?.uid) return;
+
+            try {
+                const res = await fetch(
+                    `http://localhost:5000/api/bookings/host/${user.uid}`
+                );
+                const data = await res.json();
+                const pending = data.filter((b) => b.status === "pending");
+                setPendingCount(pending.length);
+            } catch (err) {
+                console.error("Failed to fetch host bookings:", err);
+            }
+        };
+
+        fetchPendingBookings();
+    }, [user]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -111,10 +131,15 @@ const Header = () => {
                                     Host Dashboard
                                 </Link>
                                 <Link
-                                    className="dropdown-item text-white"
+                                    className="dropdown-item text-white d-flex justify-content-between align-items-center"
                                     to="/host-bookings"
                                 >
                                     Host Bookings
+                                    {pendingCount > 0 && (
+                                        <span className="badge bg-danger ms-2 badge-glow">
+                                            {pendingCount}
+                                        </span>
+                                    )}
                                 </Link>
 
                                 <div className="dropdown-divider"></div>

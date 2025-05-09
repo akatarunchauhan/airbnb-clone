@@ -112,3 +112,16 @@ button,
         background-position: 0% 50%;
     }
 }
+
+.badge-glow {
+    animation: glow 1s infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 5px red;
+    }
+    to {
+        box-shadow: 0 0 15px red;
+    }
+}

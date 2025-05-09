@@ -42,6 +42,20 @@ const CreateListing = () => {
         }
     };
 
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append("image", file);
+
+        const res = await fetch("http://localhost:5000/api/uploads", {
+            method: "POST",
+            body: formData,
+        });
+
+        const data = await res.json();
+        setFormData((prev) => ({ ...prev, image_url: data.imageUrl }));
+    };
+
     return (
         <div
             className="min-vh-100 text-light"
@@ -117,16 +131,38 @@ const CreateListing = () => {
                                 required
                             />
                         </div>
+                        {formData.image_url && (
+                            <div className="mb-3">
+                                <img
+                                    src={formData.image_url}
+                                    alt="Current Listing"
+                                    className="img-fluid rounded"
+                                    style={{ maxHeight: "200px" }}
+                                />
+                            </div>
+                        )}
+
                         <div className="mb-3">
-                            <label className="form-label">Image URL</label>
+                            <label className="form-label">Upload Image</label>
                             <input
-                                type="text"
-                                name="image_url"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageUpload}
                                 className="form-control bg-secondary text-light border-0"
-                                onChange={handleChange}
-                                required
                             />
+                            {formData.image_url && (
+                                <img
+                                    src={formData.image_url}
+                                    alt="Uploaded Preview"
+                                    className="mt-2 rounded"
+                                    style={{
+                                        height: "200px",
+                                        objectFit: "cover",
+                                    }}
+                                />
+                            )}
                         </div>
+
                         <div className="mb-3">
                             <label className="form-label">Description</label>
                             <textarea

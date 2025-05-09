@@ -50,6 +50,29 @@ const EditListing = () => {
         }));
     };
 
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const imageData = new FormData();
+        imageData.append("image", file);
+
+        try {
+            const res = await fetch("http://localhost:5000/api/uploads", {
+                method: "POST",
+                body: imageData,
+            });
+
+            const data = await res.json();
+            setFormData((prev) => ({
+                ...prev,
+                image_url: data.imageUrl,
+            }));
+        } catch (error) {
+            console.error("Image upload failed:", error);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -117,15 +140,29 @@ const EditListing = () => {
                                 required
                             />
                         </div>
+                        {formData.image_url && (
+                            <div className="mb-3">
+                                <img
+                                    src={formData.image_url}
+                                    alt="Current Listing"
+                                    className="img-fluid rounded"
+                                    style={{ maxHeight: "200px" }}
+                                />
+                            </div>
+                        )}
+
                         <div className="mb-3">
-                            <label className="form-label">Image URL</label>
+                            <label className="form-label">
+                                Upload New Image
+                            </label>
                             <input
-                                name="image_url"
-                                className="form-control bg-secondary text-light border-0"
-                                value={formData.image_url}
-                                onChange={handleChange}
+                                type="file"
+                                className="form-control"
+                                accept="image/*"
+                                onChange={handleImageUpload}
                             />
                         </div>
+
                         <div className="mb-3">
                             <label className="form-label">Description</label>
                             <textarea

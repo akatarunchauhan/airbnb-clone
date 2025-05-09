@@ -108,15 +108,24 @@ const Listings = () => {
                         <div key={listing.id} className="col-md-4 mb-3">
                             <div className="card h-100 bg-dark text-light shadow">
                                 <Link to={`/listings/${listing.id}`}>
-                                    <img
-                                        src={listing.image_url}
-                                        alt={listing.title}
-                                        className="card-img-top"
-                                        style={{
-                                            height: "200px",
-                                            objectFit: "cover",
-                                        }}
-                                    />
+                                    {listing.image_url ? (
+                                        <img
+                                            src={listing.image_url}
+                                            alt={listing.title}
+                                            className="card-img-top"
+                                            style={{
+                                                height: "200px",
+                                                objectFit: "cover",
+                                            }}
+                                        />
+                                    ) : (
+                                        <div
+                                            className="bg-secondary d-flex align-items-center justify-content-center text-white"
+                                            style={{ height: "200px" }}
+                                        >
+                                            No Image
+                                        </div>
+                                    )}
                                 </Link>
                                 <div className="card-body">
                                     <h5 className="card-title">
