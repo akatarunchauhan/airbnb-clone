@@ -8,8 +8,8 @@ router.post("/", async (req, res) => {
 
     try {
         const result = await pool.query(
-            `INSERT INTO bookings (user_id, listing_id, start_date, end_date) VALUES ($1, $2, $3, $4) RETURNING *`,
-            [user_id, listing_id, start_date, end_date]
+            `INSERT INTO bookings (user_id, listing_id, start_date, end_date, status) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+            [user_id, listing_id, start_date, end_date, "pending"]
         );
         res.status(201).json(result.rows[0]);
     } catch (err) {
@@ -81,6 +81,26 @@ router.delete("/:id", async (req, res) => {
     } catch (err) {
         console.error("Error cancelling booking:", err);
         res.status(500).json({ error: "Failed to cancel booking" });
+    }
+});
+
+router.put("/status/:id", async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!["approved", "rejected"].includes(status)) {
+        return res.status(400).json({ error: "Invalid status value" });
+    }
+
+    try {
+        await pool.query("UPDATE bookings SET status = $1 WHERE id = $2", [
+            status,
+            id,
+        ]);
+        res.json({ message: `Booking ${status}` });
+    } catch (err) {
+        console.error("Error updating booking status:", err);
+        res.status(500).json({ error: "Failed to update the booking status" });
     }
 });
 
