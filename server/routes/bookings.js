@@ -8,10 +8,34 @@ router.post("/", async (req, res) => {
 
     try {
         const result = await pool.query(
-            `INSERT INTO bookings (user_id, listing_id, start_date, end_date, status) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+            `INSERT INTO bookings (user_id, listing_id, start_date, end_date, status)
+             VALUES ($1, $2, $3, $4, $5) RETURNING *`,
             [user_id, listing_id, start_date, end_date, "pending"]
         );
-        res.status(201).json(result.rows[0]);
+
+        const booking = result.rows[0];
+
+        const hostRes = await pool.query(
+            "SELECT user_id FROM listings WHERE id = $1",
+            [listing_id]
+        );
+
+        const host_id = hostRes.rows[0]?.user_id;
+
+        if (host_id) {
+            await pool.query(
+                `INSERT INTO notifications (user_id, message, type, booking_id)
+                VALUES ($1, $2, $3, $4)`,
+                [
+                    host_id,
+                    `New booking request for your listing (ID: ${listing_id})`,
+                    "booking_request",
+                    booking.id,
+                ]
+            );
+        }
+
+        res.status(201).json(booking);
     } catch (err) {
         console.error("Booking error:", err);
         res.status(500).json({ error: "Failed to create booking" });
@@ -93,10 +117,22 @@ router.put("/status/:id", async (req, res) => {
     }
 
     try {
-        await pool.query("UPDATE bookings SET status = $1 WHERE id = $2", [
-            status,
-            id,
-        ]);
+        const result = await pool.query(
+            "UPDATE bookings SET status = $1 WHERE id = $2 RETURNING *",
+            [status, id]
+        );
+        const updatedBooking = result.rows[0];
+
+        await pool.query(
+            `INSERT INTO notifications (user_id, message, type, booking_id)
+    VALUES ($1, $2, $3, $4)`,
+            [
+                updatedBooking.user_id,
+                `Your booking has been ${status}.`,
+                `booking_${status}`,
+                updatedBooking.id,
+            ]
+        );
         res.json({ message: `Booking ${status}` });
     } catch (err) {
         console.error("Error updating booking status:", err);

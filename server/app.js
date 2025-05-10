@@ -5,6 +5,7 @@ import userRoutes from "./routes/users.js";
 import listingsRoutes from "./routes/listings.js";
 import bookingRoutes from "./routes/bookings.js";
 import uploadRoutes from "./routes/uploads.js";
+import notificationRoutes from "./routes/notifications.js";
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ app.use("/api/uploads", uploadRoutes);
 
 app.use("/api/listings", listingsRoutes);
 app.use("/api/bookings", bookingRoutes);
-
+app.use("/api/notifications", notificationRoutes);
 app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
