@@ -115,6 +115,7 @@ button,
 
 .badge-glow {
     animation: glow 1s infinite alternate;
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
 }
 
 @keyframes glow {

@@ -33,4 +33,20 @@ router.patch("/:id/read", async (req, res) => {
     }
 });
 
+router.get("/:user_id/unread-count", async (req, res) => {
+    const { user_id } = req.params;
+    try {
+        const result = await pool.query(
+            "SELECT COUNT(*) FROM notifications WHERE user_id = $1 AND is_read = false",
+            [user_id]
+        );
+        res.json({ count: parseInt(result.rows[0].count) });
+    } catch (err) {
+        console.error("Error fetching unread count:", err);
+        res.status(500).json({
+            error: "Failed to get unread notifications count",
+        });
+    }
+});
+
 export default router;

@@ -12,6 +12,7 @@ import MyListings from "./pages/MyListings";
 import MyBookings from "./pages/MyBookings";
 import HostDashboard from "./pages/HostDashboard";
 import HostBookings from "./pages/HostBookings";
+import Notifications from "./pages/Notifications";
 import "./App.css";
 
 const App = () => {
@@ -76,6 +77,14 @@ const App = () => {
                 element={
                     <ProtectedRoute>
                         <HostDashboard />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/notifications"
+                element={
+                    <ProtectedRoute>
+                        <Notifications />
                     </ProtectedRoute>
                 }
             />

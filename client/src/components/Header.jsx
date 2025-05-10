@@ -9,6 +9,24 @@ const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef();
     const [pendingCount, setPendingCount] = useState(0);
+    const [unreadCount, setUnreadCount] = useState(0);
+
+    useEffect(() => {
+        const fetchUnreadCount = async () => {
+            if (!user?.uid) return;
+            try {
+                const res = await fetch(
+                    `http://localhost:5000/api/notifications/${user.uid}/unread-count`
+                );
+                const data = await res.json();
+                setUnreadCount(data.count);
+            } catch (err) {
+                console.error("Failed to fetch unread count:", err);
+            }
+        };
+
+        fetchUnreadCount();
+    }, [user]);
 
     useEffect(() => {
         const fetchPendingBookings = async () => {
@@ -61,96 +79,124 @@ const Header = () => {
 
             <div className="ms-auto d-flex align-items-center position-relative">
                 {user ? (
-                    <div className="position-relative" ref={dropdownRef}>
-                        <button
-                            className="btn d-flex align-items-center text-white"
-                            onClick={() => setDropdownOpen(!dropdownOpen)}
+                    <div className="ms-auto d-flex align-items-center gap-3">
+                        {/* Bell Icon */}
+                        <Link
+                            to="/notifications"
+                            className="text-white position-relative"
+                            style={{ fontSize: "1.5rem" }}
                         >
-                            <img
-                                src={
-                                    user.photoURL ||
-                                    `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                                        user.displayName
-                                    )}&background=random`
-                                }
-                                alt="Profile"
-                                className="rounded-circle me-2"
-                                style={{
-                                    width: "36px",
-                                    height: "36px",
-                                    border: "2px solid white",
-                                }}
-                            />
-                            <span className="fw-semibold">
-                                {user.displayName}
-                            </span>
-                        </button>
+                            <i className="bi bi-bell"></i>
+                            {unreadCount > 0 && (
+                                <span
+                                    className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                    style={{ fontSize: "0.7rem" }}
+                                >
+                                    {unreadCount}
+                                </span>
+                            )}
+                        </Link>
 
-                        {dropdownOpen && (
-                            <div
-                                className="dropdown-menu dropdown-menu-end show mt-2 animate__animated animate__fadeIn"
-                                style={{
-                                    background: "rgba(30, 30, 30, 0.85)",
-                                    backdropFilter: "blur(12px)",
-                                    border: "1px solid rgba(255,255,255,0.1)",
-                                    borderRadius: "12px",
-                                    boxShadow: "0 8px 16px rgba(0,0,0,0.4)",
-                                    minWidth: "220px",
-                                    overflow: "hidden",
-                                    transition: "all 0.3s ease",
-                                }}
+                        {/* Profile Button + Dropdown */}
+                        <div className="position-relative" ref={dropdownRef}>
+                            <button
+                                className="btn d-flex align-items-center text-white"
+                                onClick={() => setDropdownOpen(!dropdownOpen)}
                             >
-                                <Link
-                                    className="dropdown-item text-white"
-                                    to="/listings"
-                                >
-                                    Listings
-                                </Link>
-                                <Link
-                                    className="dropdown-item text-white"
-                                    to="/create"
-                                >
-                                    Create Listing
-                                </Link>
-                                <Link
-                                    className="dropdown-item text-white"
-                                    to="/my-listings"
-                                >
-                                    My Listings
-                                </Link>
-                                <Link
-                                    className="dropdown-item text-white"
-                                    to="/my-bookings"
-                                >
-                                    My Bookings
-                                </Link>
-                                <Link
-                                    className="dropdown-item text-white"
-                                    to="/host-dashboard"
-                                >
-                                    Host Dashboard
-                                </Link>
-                                <Link
-                                    className="dropdown-item text-white d-flex justify-content-between align-items-center"
-                                    to="/host-bookings"
-                                >
-                                    Host Bookings
-                                    {pendingCount > 0 && (
-                                        <span className="badge bg-danger ms-2 badge-glow">
-                                            {pendingCount}
-                                        </span>
-                                    )}
-                                </Link>
+                                <img
+                                    src={
+                                        user.photoURL ||
+                                        `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                                            user.displayName
+                                        )}&background=random`
+                                    }
+                                    alt="Profile"
+                                    className="rounded-circle me-2"
+                                    style={{
+                                        width: "36px",
+                                        height: "36px",
+                                        border: "2px solid white",
+                                    }}
+                                />
+                                <span className="fw-semibold">
+                                    {user.displayName}
+                                </span>
+                            </button>
 
-                                <div className="dropdown-divider"></div>
-                                <button
-                                    className="dropdown-item text-danger"
-                                    onClick={handleLogout}
+                            {/* Dropdown menu */}
+                            {dropdownOpen && (
+                                <div
+                                    className="dropdown-menu dropdown-menu-end show mt-2 animate__animated animate__fadeIn"
+                                    style={{
+                                        background: "rgba(30, 30, 30, 0.85)",
+                                        backdropFilter: "blur(12px)",
+                                        border: "1px solid rgba(255,255,255,0.1)",
+                                        borderRadius: "12px",
+                                        boxShadow: "0 8px 16px rgba(0,0,0,0.4)",
+                                        minWidth: "220px",
+                                        overflow: "hidden",
+                                        transition: "all 0.3s ease",
+                                    }}
                                 >
-                                    Logout
-                                </button>
-                            </div>
-                        )}
+                                    {/* Dropdown links */}
+                                    <Link
+                                        className="dropdown-item text-white"
+                                        to="/listings"
+                                    >
+                                        Listings
+                                    </Link>
+                                    <Link
+                                        className="dropdown-item text-white"
+                                        to="/create"
+                                    >
+                                        Create Listing
+                                    </Link>
+                                    <Link
+                                        className="dropdown-item text-white"
+                                        to="/my-listings"
+                                    >
+                                        My Listings
+                                    </Link>
+                                    <Link
+                                        className="dropdown-item text-white"
+                                        to="/my-bookings"
+                                    >
+                                        My Bookings
+                                    </Link>
+                                    <Link
+                                        className="dropdown-item text-white"
+                                        to="/host-dashboard"
+                                    >
+                                        Host Dashboard
+                                    </Link>
+                                    <Link
+                                        className="dropdown-item text-white d-flex justify-content-between align-items-center"
+                                        to="/host-bookings"
+                                    >
+                                        Host Bookings
+                                        {pendingCount > 0 && (
+                                            <span className="badge bg-danger ms-2 badge-glow">
+                                                {pendingCount}
+                                            </span>
+                                        )}
+                                    </Link>
+                                    <Link
+                                        className="dropdown-item text-white"
+                                        to="/notifications"
+                                    >
+                                        Notifications
+                                    </Link>
+
+                                    <div className="dropdown-divider"></div>
+                                    <button
+                                        className="dropdown-item text-danger"
+                                        onClick={handleLogout}
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 ) : (
                     <Link className="btn btn-outline-light" to="/">
