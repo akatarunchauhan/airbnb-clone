@@ -34,6 +34,7 @@ const Notifications = () => {
             console.error("Failed to mark as read:", err);
         }
     };
+
     useEffect(() => {
         if (user?.uid) {
             fetchNotifications();
@@ -70,21 +71,19 @@ const Notifications = () => {
                                 style={{ cursor: "pointer" }}
                                 onClick={() => markAsRead(n.id)}
                             >
-                                <span>
+                                <div>
                                     📬 {n.message}
                                     <br />
-                                    import {formatDistanceToNow} from
-                                    "date-fns"; // Inside your map loop:
-                                    <p
+                                    <span
                                         className="text-muted"
                                         style={{ fontSize: "0.8rem" }}
                                     >
                                         {formatDistanceToNow(
-                                            new Date(notification.created_at),
+                                            new Date(n.created_at),
                                             { addSuffix: true }
                                         )}
-                                    </p>
-                                </span>
+                                    </span>
+                                </div>
                                 {!n.is_read && (
                                     <span className="badge bg-warning text-dark">
                                         New
