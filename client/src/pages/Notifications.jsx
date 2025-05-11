@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { useAuth } from "../context/AuthContext";
+import { formatDistanceToNow } from "date-fns";
 
 const Notifications = () => {
     const { user } = useAuth();
@@ -39,6 +40,11 @@ const Notifications = () => {
         }
     }, [user]);
 
+    useEffect(() => {
+        const interval = setInterval(fetchNotifications, 30000);
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <div
             className="min-vh-100 text-light"
@@ -67,11 +73,17 @@ const Notifications = () => {
                                 <span>
                                     📬 {n.message}
                                     <br />
-                                    <small className="text-muted">
-                                        {new Date(
-                                            n.created_at
-                                        ).toLocaleString()}
-                                    </small>
+                                    import {formatDistanceToNow} from
+                                    "date-fns"; // Inside your map loop:
+                                    <p
+                                        className="text-muted"
+                                        style={{ fontSize: "0.8rem" }}
+                                    >
+                                        {formatDistanceToNow(
+                                            new Date(notification.created_at),
+                                            { addSuffix: true }
+                                        )}
+                                    </p>
                                 </span>
                                 {!n.is_read && (
                                     <span className="badge bg-warning text-dark">
