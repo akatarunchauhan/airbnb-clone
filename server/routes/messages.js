@@ -23,8 +23,8 @@ router.get("/:booking_id", async (req, res) => {
     try {
         const result = await pool.query(
             `SELECT * FROM messages
-             WHERE booking_id = $1
-             ORDER BY created_at ASC`,
+            WHERE booking_id = $1
+            ORDER BY created_at ASC`,
             [booking_id]
         );
         res.json(result.rows);
@@ -52,7 +52,7 @@ router.get("/unread-count/:user_id", async (req, res) => {
     try {
         const result = await pool.query(
             `SELECT COUNT(*) FROM messages
-             WHERE is_read = false AND recipient_id = $1`,
+            WHERE is_read = false AND recipient_id = $1`,
             [user_id]
         );
         res.json({ count: parseInt(result.rows[0].count) });
