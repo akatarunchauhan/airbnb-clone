@@ -13,6 +13,7 @@ import MyBookings from "./pages/MyBookings";
 import HostDashboard from "./pages/HostDashboard";
 import HostBookings from "./pages/HostBookings";
 import Notifications from "./pages/Notifications";
+import MessageCenter from "./pages/MessageCenter";
 import "./App.css";
 
 const App = () => {
@@ -85,6 +86,14 @@ const App = () => {
                 element={
                     <ProtectedRoute>
                         <Notifications />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/messages"
+                element={
+                    <ProtectedRoute>
+                        <MessageCenter />
                     </ProtectedRoute>
                 }
             />

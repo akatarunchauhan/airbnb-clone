@@ -4,12 +4,12 @@ import pool from "../db/index.js";
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-    const { booking_id, sender_id, content } = req.body;
+    const { booking_id, sender_id, recipient_id, content } = req.body;
     try {
         const result = await pool.query(
-            `INSERT INTO messages (booking_id, sender_id, content, is_read)
-             VALUES ($1, $2, $3, false) RETURNING *`,
-            [booking_id, sender_id, content]
+            `INSERT INTO messages (booking_id, sender_id, recipient_id, content, is_read)
+             VALUES ($1, $2, $3, $4, false) RETURNING *`,
+            [booking_id, sender_id, recipient_id, content]
         );
         res.status(201).json(result.rows[0]);
     } catch (err) {
@@ -61,3 +61,5 @@ router.get("/unread-count/:user_id", async (req, res) => {
         res.status(500).json({ error: "Failed to get unread count" });
     }
 });
+
+export default router;

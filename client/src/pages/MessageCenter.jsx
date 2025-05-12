@@ -26,13 +26,14 @@ const MessageCenter = () => {
         if (!newMessage.trim()) return;
 
         try {
-            const res = await fetch(`http://localhost:5000/api/messages`, {
+            const res = await fetch("http://localhost:5000/api/messages", {
                 method: "POST",
-                headers: { "Content-Type": "application.json" },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     booking_id,
                     sender_id: user.uid,
-                    content: newMessage,
+                    recipient_id, // must determine who is the other party
+                    content: messageText,
                 }),
             });
 

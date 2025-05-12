@@ -10,6 +10,7 @@ const Header = () => {
     const dropdownRef = useRef();
     const [pendingCount, setPendingCount] = useState(0);
     const [unreadCount, setUnreadCount] = useState(0);
+    const [unreadMessages, setUnreadMessages] = useState(0);
 
     useEffect(() => {
         const fetchUnreadCount = async () => {
@@ -61,6 +62,24 @@ const Header = () => {
             document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    useEffect(() => {
+        const fetchUnreadMessages = async () => {
+            if (!user?.uid) return;
+
+            try {
+                const res = await fetch(
+                    `http://localhost:5000/api/messages/unread-count/${user.uid}`
+                );
+                const data = await res.json();
+                setUnreadMessages(data.count);
+            } catch (err) {
+                console.error("Failed to fetch unread messages:", err);
+            }
+        };
+
+        fetchUnreadMessages();
+    }, [user]);
+
     const handleLogout = () => {
         logout();
         navigate("/");
@@ -93,6 +112,24 @@ const Header = () => {
                                     style={{ fontSize: "0.7rem" }}
                                 >
                                     {unreadCount}
+                                </span>
+                            )}
+                        </Link>
+
+                        <Link
+                            to="/messages"
+                            className="text-white position-relative me-3"
+                        >
+                            <i
+                                className="bi bi-envelope"
+                                style={{ fontSize: "1.5rem" }}
+                            ></i>
+                            {unreadMessages > 0 && (
+                                <span
+                                    className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                    style={{ fontSize: "0.7rem" }}
+                                >
+                                    {unreadMessages}
                                 </span>
                             )}
                         </Link>
