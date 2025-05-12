@@ -9,6 +9,7 @@ const MessageCenter = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
     const messagesEndRef = useRef(null);
+    const [recipientId, setRecipientId] = useState(null);
 
     const fetchMessages = async () => {
         try {
@@ -32,8 +33,8 @@ const MessageCenter = () => {
                 body: JSON.stringify({
                     booking_id,
                     sender_id: user.uid,
-                    recipient_id, // must determine who is the other party
-                    content: messageText,
+                    recipient_id: recipientId,
+                    content: newMessage,
                 }),
             });
 
@@ -47,13 +48,37 @@ const MessageCenter = () => {
     };
 
     useEffect(() => {
+        const fetchBooking = async () => {
+            try {
+                const res = await fetch(
+                    `http://localhost:5000/api/bookings/${booking_id}`
+                );
+                const booking = await res.json();
+
+                const otherParty =
+                    user.uid === booking.user_id
+                        ? booking.listing_user_id
+                        : booking.user_id;
+
+                setRecipientId(otherParty);
+            } catch (err) {
+                console.error("Failed to fetch booking:", err);
+            }
+        };
+
+        if (user?.uid && booking_id) {
+            fetchBooking();
+        }
+    }, [booking_id, user]);
+
+    useEffect(() => {
         if (booking_id) {
             fetchMessages();
         }
     }, [booking_id]);
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behaviour: "smooth" });
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
     return (

@@ -42,23 +42,25 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.get("/user/:user_id", async (req, res) => {
-    const { user_id } = req.params;
-
+router.get("/:id", async (req, res) => {
+    const { id } = req.params;
     try {
         const result = await pool.query(
-            `SELECT b.*, l.title, l.image_url
+            `SELECT b.*, l.user_id AS listing_user_id
             FROM bookings b
             JOIN listings l ON b.listing_id = l.id
-            WHERE b.user_id = $1
-            ORDER BY b.start_date DESC
-            `,
-            [user_id]
+            WHERE b.id = $1`,
+            [id]
         );
-        res.json(result.rows);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "Booking not found" });
+        }
+
+        res.json(result.rows[0]);
     } catch (err) {
-        console.error("Fetch bookings error:", err.message, err.stack);
-        res.status(500).json({ error: "Failed to fetch bookings" });
+        console.error("Error fetching booking by ID:", err);
+        res.status(500).json({ error: "Failed to fetch booking" });
     }
 });
 
