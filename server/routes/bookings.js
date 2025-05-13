@@ -42,14 +42,15 @@ router.post("/", async (req, res) => {
     }
 });
 
+// Get single booking by ID (with host user_id)
 router.get("/:id", async (req, res) => {
     const { id } = req.params;
     try {
         const result = await pool.query(
             `SELECT b.*, l.user_id AS listing_user_id
-            FROM bookings b
-            JOIN listings l ON b.listing_id = l.id
-            WHERE b.id = $1`,
+             FROM bookings b
+             JOIN listings l ON b.listing_id = l.id
+             WHERE b.id = $1`,
             [id]
         );
 
@@ -80,6 +81,26 @@ router.get("/host/:user_id", async (req, res) => {
     } catch (err) {
         console.error("Host bookings fetch error:", err);
         res.status(500).json({ error: "Failed to fetch host bookings" });
+    }
+});
+
+// Get all bookings for a user (guest)
+router.get("/user/:user_id", async (req, res) => {
+    const { user_id } = req.params;
+
+    try {
+        const result = await pool.query(
+            `SELECT b.*, l.title, l.image_url
+             FROM bookings b
+             JOIN listings l ON b.listing_id = l.id
+             WHERE b.user_id = $1
+             ORDER BY b.start_date DESC`,
+            [user_id]
+        );
+        res.json(result.rows);
+    } catch (err) {
+        console.error("Error fetching bookings for user:", err);
+        res.status(500).json({ error: "Failed to fetch bookings" });
     }
 });
 
