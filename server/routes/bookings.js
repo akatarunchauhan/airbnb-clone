@@ -3,6 +3,8 @@ import pool from "../db/index.js";
 
 const router = express.Router();
 
+// Get a specific booking by ID and include host user_id
+
 router.post("/", async (req, res) => {
     const { user_id, listing_id, start_date, end_date } = req.body;
 
@@ -39,29 +41,6 @@ router.post("/", async (req, res) => {
     } catch (err) {
         console.error("Booking error:", err);
         res.status(500).json({ error: "Failed to create booking" });
-    }
-});
-
-// Get single booking by ID (with host user_id)
-router.get("/:id", async (req, res) => {
-    const { id } = req.params;
-    try {
-        const result = await pool.query(
-            `SELECT b.*, l.user_id AS listing_user_id
-             FROM bookings b
-             JOIN listings l ON b.listing_id = l.id
-             WHERE b.id = $1`,
-            [id]
-        );
-
-        if (result.rows.length === 0) {
-            return res.status(404).json({ error: "Booking not found" });
-        }
-
-        res.json(result.rows[0]);
-    } catch (err) {
-        console.error("Error fetching booking by ID:", err);
-        res.status(500).json({ error: "Failed to fetch booking" });
     }
 });
 
@@ -188,6 +167,28 @@ router.patch("/:id/reject", async (req, res) => {
     } catch (err) {
         console.error("Error rejecting booking:", err);
         res.status(500).json({ error: "Failed to reject booking" });
+    }
+});
+
+router.get("/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query(
+            `SELECT b.*, l.user_id AS listing_user_id
+            FROM bookings b
+            JOIN listings l ON b.listing_id = l.id
+            WHERE b.id = $1`,
+            [id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "Booking not found" });
+        }
+
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error("Error fetching booking by ID:", err);
+        res.status(500).json({ error: "Failed to fetch booking" });
     }
 });
 

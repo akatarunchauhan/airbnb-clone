@@ -26,6 +26,13 @@ const MessageCenter = () => {
     const sendMessage = async () => {
         if (!newMessage.trim()) return;
 
+        if (!recipientId) {
+            console.error("recipientId is null. Cannot send message.");
+            return;
+        }
+
+        console.log("Sending message to recipientId:", recipientId);
+
         try {
             const res = await fetch("http://localhost:5000/api/messages", {
                 method: "POST",
@@ -41,6 +48,9 @@ const MessageCenter = () => {
             if (res.ok) {
                 setNewMessage("");
                 fetchMessages();
+            } else {
+                const error = await res.json();
+                console.error("Failed to send message:", error);
             }
         } catch (err) {
             console.error("Failed to send message:", err);
@@ -54,6 +64,7 @@ const MessageCenter = () => {
                     `http://localhost:5000/api/bookings/${booking_id}`
                 );
                 const booking = await res.json();
+                console.log("Fetched booking:", booking);
 
                 const otherParty =
                     user.uid === booking.user_id
