@@ -93,7 +93,7 @@ const Header = () => {
                     alt="Chistay Logo"
                     style={{ height: "40px", marginRight: "10px" }}
                 />
-                <span className="fw-bold text-white">Sasti Masti</span>
+                <span className="fw-bold text-white">Chief Stays</span>
             </Link>
 
             <div className="ms-auto d-flex align-items-center position-relative">
