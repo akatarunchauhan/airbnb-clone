@@ -32,7 +32,7 @@ const Login = () => {
         <div className="login-background">
             <div className="login-card">
                 <img src={logo} alt="Chistay Logo" className="login-logo" />
-                <h2 className="login-title">Welcome to Sasti Masti</h2>
+                <h2 className="login-title">Welcome to Chief Stays</h2>
                 <button className="login-button" onClick={handleGoogleLogin}>
                     Sign in with Google
                 </button>
