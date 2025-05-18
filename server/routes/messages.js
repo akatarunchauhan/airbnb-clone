@@ -18,6 +18,21 @@ router.post("/", async (req, res) => {
     }
 });
 
+router.get("/unread-count/:user_id", async (req, res) => {
+    const { user_id } = req.params;
+    try {
+        const result = await pool.query(
+            `SELECT COUNT(*) FROM messages
+            WHERE is_read = false AND recipient_id = $1`,
+            [user_id]
+        );
+        res.json({ count: parseInt(result.rows[0].count) });
+    } catch (err) {
+        console.error("Unread count error:", err);
+        res.status(500).json({ error: "Failed to get unread count" });
+    }
+});
+
 router.get("/:booking_id", async (req, res) => {
     const { booking_id } = req.params;
     try {
