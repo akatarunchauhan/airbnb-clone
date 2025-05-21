@@ -39,6 +39,14 @@ const App = () => {
                 }
             />
             <Route
+                path="/leave-review/:booking_id/:listing_id"
+                element={
+                    <ProtectedRoute>
+                        <LeaveReview />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
                 path="/create"
                 element={
                     <ProtectedRoute>
