@@ -102,6 +102,16 @@ const MyBookings = () => {
                                                 </button>
                                             )}
                                         </p>
+                                        {new Date(booking.end_date) <
+                                            new Date() &&
+                                            !booking.has_review && (
+                                                <Link
+                                                    to={`/leave-review/${booking.id}/${booking.listing_id}`}
+                                                    className="btn btn-sm btn-outline-light mt-2"
+                                                >
+                                                    Leave Review
+                                                </Link>
+                                            )}
                                     </div>
                                 </div>
                             </div>
