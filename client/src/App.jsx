@@ -14,6 +14,7 @@ import HostDashboard from "./pages/HostDashboard";
 import HostBookings from "./pages/HostBookings";
 import Notifications from "./pages/Notifications";
 import MessageCenter from "./pages/MessageCenter";
+import LeaveReview from "./pages/LeaveReview";
 import "./App.css";
 
 const App = () => {
