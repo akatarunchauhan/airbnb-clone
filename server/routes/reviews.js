@@ -3,7 +3,6 @@ import pool from "../db/index.js";
 
 const router = express.Router();
 
-// POST /api/reviews — Create a new review
 router.post("/", async (req, res) => {
     const { booking_id, listing_id, user_id, rating, comment } = req.body;
 
@@ -33,7 +32,6 @@ router.post("/", async (req, res) => {
     }
 });
 
-// GET /api/reviews/:listing_id — Get all reviews for a listing
 router.get("/:listing_id", async (req, res) => {
     const { listing_id } = req.params;
 
@@ -53,7 +51,6 @@ router.get("/:listing_id", async (req, res) => {
     }
 });
 
-// GET /api/reviews/booking/:booking_id — Check if booking already has a review
 router.get("/booking/:booking_id", async (req, res) => {
     const { booking_id } = req.params;
 
