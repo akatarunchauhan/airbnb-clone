@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import Header from "../components/Header";
 import { useAuth } from "../context/AuthContext";
+import ReviewsSection from "../components/ReviewsSection";
 
 const ListingDetail = () => {
     const { id } = useParams();
@@ -112,6 +113,8 @@ const ListingDetail = () => {
                             }}
                         />
                     </div>
+                    <ReviewsSection listingId={listing.id} />
+
                     <div className="col-md-4">
                         <div className="bg-dark p-3 rounded shadow">
                             <h2>{listing.title}</h2>
