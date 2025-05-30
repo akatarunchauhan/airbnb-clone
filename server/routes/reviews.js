@@ -38,13 +38,24 @@ router.get("/:listing_id", async (req, res) => {
     try {
         const result = await pool.query(
             `SELECT r.*, u.display_name
-            FROM reviews r
-            JOIN users u ON r.user_id = u.id
-            WHERE listing_id = $1
-            ORDER BY r.created_at DESC`,
+             FROM reviews r
+             JOIN users u ON r.user_id = u.id
+             WHERE r.listing_id = $1
+             ORDER BY r.created_at DESC`,
             [listing_id]
         );
-        res.json(result.rows);
+
+        const avgResult = await pool.query(
+            `SELECT AVG(rating)::numeric(2,1) as average_rating
+             FROM reviews
+             WHERE listing_id = $1`,
+            [listing_id]
+        );
+
+        res.json({
+            reviews: result.rows,
+            averageRating: avgResult.rows[0].average_rating || null,
+        });
     } catch (err) {
         console.error("Error fetching reviews:", err);
         res.status(500).json({ error: "Failed to fetch reviews" });

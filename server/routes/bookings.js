@@ -70,9 +70,9 @@ router.get("/user/:user_id", async (req, res) => {
     try {
         const result = await pool.query(
             `SELECT b.*, l.title, l.image_url,
-  EXISTS (
-    SELECT 1 FROM reviews r WHERE r.booking_id = b.id
-  ) AS has_review
+            EXISTS (
+            SELECT 1 FROM reviews r WHERE r.booking_id = b.id
+            ) AS has_review
 FROM bookings b
 JOIN listings l ON b.listing_id = l.id
 WHERE b.user_id = $1
