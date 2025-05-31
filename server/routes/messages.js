@@ -5,6 +5,11 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     const { booking_id, sender_id, recipient_id, content } = req.body;
+
+    if (!recipient_id) {
+        return res.status(400).json({ error: "Recipient ID is required" });
+    }
+
     try {
         const result = await pool.query(
             `INSERT INTO messages (booking_id, sender_id, recipient_id, content, is_read)
