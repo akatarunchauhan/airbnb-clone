@@ -13,10 +13,23 @@ const ListingDetail = () => {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [bookingMessage, setBookingMessage] = useState(null);
+    const [reviews, setReviews] = useState([]);
+    const [averageRating, setAverageRating] = useState(null);
 
     console.log("Logged in user:", user);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+            const res = await fetch(`http://localhost:5000/api/reviews/${id}`);
+            const data = await res.json();
+            setReviews(data.reviews);
+            setAverageRating(data.averageRating);
+        };
+
+        fetchReviews();
+    }, [id]);
 
     useEffect(() => {
         const fetchListing = async () => {
@@ -184,6 +197,34 @@ const ListingDetail = () => {
                                             {bookingMessage}
                                         </div>
                                     )}
+                                    {averageRating && (
+                                        <div className="mt-3">
+                                            <h5>
+                                                ⭐ Average Rating:{" "}
+                                                {averageRating}/5
+                                            </h5>
+                                        </div>
+                                    )}
+
+                                    <div className="mt-3">
+                                        <h5>Guest Reviews</h5>
+                                        {reviews.length === 0 ? (
+                                            <p>No reviews yet.</p>
+                                        ) : (
+                                            reviews.map((r) => (
+                                                <div
+                                                    key={r.id}
+                                                    className="border rounded p-2 mb-2 bg-dark text-white"
+                                                >
+                                                    <strong>
+                                                        {r.display_name}
+                                                    </strong>{" "}
+                                                    – ⭐ {r.rating}
+                                                    <p>{r.comment}</p>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
                                 </div>
                             )}
                         </div>
