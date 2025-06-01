@@ -37,15 +37,20 @@ const ReviewsSection = ({ listingId }) => {
                 <p>No reviews yet.</p>
             ) : (
                 <ul className="list-group">
-                    {reviews.map((review) => (
-                        <li
-                            key={review.id}
-                            className="list-group-item bg-dark text-light mb-2"
-                        >
-                            <strong>⭐ {review.rating}</strong>
-                            <p className="mb-0">{review.comment}</p>
-                        </li>
-                    ))}
+                    {Array.isArray(reviews) && reviews.length > 0 ? (
+                        reviews.map((r) => (
+                            <div
+                                key={r.id}
+                                className="border rounded p-2 mb-2 bg-dark text-white"
+                            >
+                                <strong>{r.display_name}</strong> – ⭐{" "}
+                                {r.rating}
+                                <p>{r.comment}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No reviews yet.</p>
+                    )}
                 </ul>
             )}
         </div>
