@@ -22,10 +22,20 @@ const ListingDetail = () => {
 
     useEffect(() => {
         const fetchReviews = async () => {
-            const res = await fetch(`http://localhost:5000/api/reviews/${id}`);
-            const data = await res.json();
-            setReviews(data.reviews);
-            setAverageRating(data.averageRating);
+            try {
+                const res = await fetch(
+                    `http://localhost:5000/api/reviews/${id}`
+                );
+                if (!res.ok) {
+                    throw new Error("Failed to fetch reviews");
+                }
+                const data = await res.json();
+                setReviews(data.reviews || []);
+                setAverageRating(data.averageRating || null);
+            } catch (error) {
+                console.error("Error loading reviews:", error);
+                setReviews([]);
+            }
         };
 
         fetchReviews();
