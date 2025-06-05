@@ -37,11 +37,7 @@ router.get("/:listing_id", async (req, res) => {
 
     try {
         const result = await pool.query(
-            `SELECT r.*, u.display_name
-             FROM reviews r
-             JOIN users u ON r.user_id = u.id
-             WHERE r.listing_id = $1
-             ORDER BY r.created_at DESC`,
+            `SELECT * FROM reviews WHERE listing_id = $1 ORDER BY created_at DESC`,
             [listing_id]
         );
 
