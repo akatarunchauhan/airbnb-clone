@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const Listings = () => {
     const [listings, setListings] = useState([]);
@@ -165,6 +166,7 @@ const Listings = () => {
                     ))}
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };
