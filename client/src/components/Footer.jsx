@@ -31,7 +31,7 @@ const Footer = () => {
                         </p>
                     </div>
 
-                    {/* Links / Social */}
+                    {/* Links*/}
                     <div className="col-md-4 mb-3">
                         <h6>Useful Links</h6>
                         <ul className="list-unstyled">
@@ -53,7 +53,7 @@ const Footer = () => {
                             </li>
                             <li className="mt-2">
                                 <a
-                                    href="https://github.com"
+                                    href="https://github.com/akatarunchauhan"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-light me-3"
@@ -75,7 +75,7 @@ const Footer = () => {
                                     ></i>
                                 </a>
                                 <a
-                                    href="https://twitter.com"
+                                    href="https://x.com/akatarunchauhan"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-light"
